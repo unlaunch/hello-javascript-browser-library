@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Animated Login Form</title>
+    <link rel="stylesheet" href="assets/login.css">
+
+    <script crossorigin="anonymous" src="https://unpkg.com/unlaunch-js-client-lib@0.0.5"></script>
+
+    <script>
+        let flag = ['give-latest-sword'];
+
+        // User identity 
+        let identity = 'anonymous';
+
+        let attributes = {
+            "country": "US"
+        };
+
+        var options = {
+            bootstrap: 'localstorage',
+            evaluationReason: true,
+            offline: false,
+        }
+
+        let ulclient = ULClient.initialize(
+            'prod-client-b7691b4c-8f00-43f4-9ca4-c7026878478a',
+            flag,
+            identity,
+            null,
+            options
+        );
+
+
+        function getWelcomeMessage() {
+            document.getElementById('Result').innerHTML = "If you could just go ahead and login that would be terrific";
+        }
+
+        function getNewWelcomeMessage() {
+            document.getElementById('Result').innerHTML = "Please log in";
+        }
+
+    </script>
+</head>
+
+<body text="#192a56">
+
+    <h1>Initech</h1>
+    <style>
+        body {
+            text-align: center
+        }
+    </style>
+
+    <h2 id="Result">
+        <script>
+            ulclient.on('ready', function () {
+               
+                let variation = ulclient.variation('give-latest-sword');
+
+                if (variation === 'on') {
+                    getNewWelcomeMessage();
+                } else {
+                    getWelcomeMessage();
+                }
+
+                let config = ulclient.variationConfiguration('give-latest-sword')
+                console.log(config)
+
+            });
+        </script>
+    </h2>
+    <style>
+        body {
+            text-align: center
+        }
+    </style>
+
+    <form class="box" action="First.html" method="post">
+        <h1>Login</h1>
+        <input type="text" name="" placeholder="Username">
+        <input type="password" name="" placeholder="Password">
+        <input type="submit" name="" value="Login">
+    </form>
+
+
+</body>
+
+</html>
