@@ -3,29 +3,25 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Animated Login Form</title>
+    <title>Initech Login</title>
     <link rel="stylesheet" href="assets/login.css">
 
-    <script crossorigin="anonymous" src="https://unpkg.com/unlaunch-js-client-lib@0.0.6"></script>
+    <!-- Add Unlaunch JavaScript library -->
+    <script crossorigin="anonymous" src="https://unpkg.com/unlaunch-js-client-lib@0.0.7"></script>
 
     <script>
-        const flag = 'initech-login-form-color'
+        const flag = 'new-login-form-flag'
+        const apiKey = 'prod-server-7f05812f-cd5a-41dd-b79b-6f30d84cd335'
+        const identity = 'anonymous'; // User identity 
 
-        // User identity 
-        let identity = 'anonymous';
-
-        let attributes = {
-            "country": "US"
-        };
-
-        var options = {
+        const options = {
             bootstrap: 'localstorage',
             evaluationReason: true,
             offline: false,
         }
 
-        let ulclient = ULClient.initialize(
-            'prod-sdk-6f8a9af9-8b94-4edc-bf0e-32087c10e4ad',
+        const ulclient = ULClient.initialize(
+            apiKey,
             [flag],
             identity,
             null,
@@ -33,46 +29,44 @@
         );
 
 
-        function getWelcomeMessage() {
-            document.getElementById('Result').innerHTML = "If you could just go ahead and login that would be terrific";
+        function getOldLoginForm() {
+            document.getElementById('LoginForm').innerHTML = "Login v2";
         }
 
-        function getNewWelcomeMessage() {
-            document.getElementById('Result').innerHTML = "Please log in";
+        function getNewLoginForm() {
+            document.getElementById('LoginForm').innerHTML = "Login v1";
         }
 
+        // banner
+        console.log('Unlaunch JavaScript librayr demo. This demo will call a feature flag that returns either "on" or "off" variation. Depending on the variation returned, it will show Login form version 1 or version 2');
+        console.log('For more information, see: https://docs.unlaunch.io/docs/sdks/javascript-library')
     </script>
 </head>
 
 <body text="#192a56">
-
     <h1>Initech</h1>
-    <style>
-        body {
-            text-align: center
-        }
-    </style>
+    <script>
+        ulclient.on('ready', function () {
 
-    <h2 id="Result">
-        <script>
-            ulclient.on('ready', function () {
-               
-                let variation = ulclient.variation(flag);
+            let variation = ulclient.variation(flag);
+            console.log(`[UL] Variation is ${variation}`)
 
-                if (variation === 'on') {
-                    getNewWelcomeMessage();
-                } else {
-                    getWelcomeMessage();
-                }
+            const details = ulclient.variationDetail(flag);
+            console.log(`[UL] Evaluation reason is ${details.reason}`)
 
-                let config = ulclient.variationConfiguration(flag)
-                console.log(config)
 
-               
+            if (variation === 'on') {
+                getNewLoginForm();
+            } else {
+                getOldLoginForm();
+            }
 
-            });
-        </script>
-    </h2>
+            let config = ulclient.variationConfiguration(flag)
+            console.log(config)
+        });
+    </script>
+
+    <h3>[open Console to see messages]</h3>
     <style>
         body {
             text-align: center
@@ -80,13 +74,10 @@
     </style>
 
     <form class="box" action="First.html" method="post">
-        <h1>Login</h1>
+        <h1 id="LoginForm">Login</h1>
         <input type="text" name="" placeholder="Username">
         <input type="password" name="" placeholder="Password">
         <input type="submit" name="" value="Login">
     </form>
-
-
 </body>
-
 </html>
