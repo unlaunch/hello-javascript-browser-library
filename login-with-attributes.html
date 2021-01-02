@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Initech Login</title>
+    <link rel="stylesheet" href="assets/login.css">
+
+    <!-- Add Unlaunch JavaScript library -->
+    <script crossorigin="anonymous" src="https://unpkg.com/unlaunch-js-client-lib@0.0.7"></script>
+
+    <script>
+        const flag = 'mfa-feature'
+        const apiKey = 'prod-public-c1967ee6-f9f3-43c5-ae40-7f8ab6d725cd'
+        const identity = 'anonymous' // Use special anonymous identity which generates a unique UUID
+
+        const options = {
+            bootstrap: 'localstorage', // Use local storage
+            evaluationReason: true,
+        }
+
+        // If registered == true, you'd see "on" variation and Login V2 will be printed
+        // Otherwise, you'll get "off" variation and Login V1 will be printd
+        let attributes = {
+            "registered": true
+        }
+
+        const ulclient = ULClient.initialize(
+            apiKey,
+            [flag],
+            identity,
+            attributes,
+            options
+        );
+
+
+        function getOldLoginForm() {
+            document.getElementById('LoginForm').innerHTML = "Login v1";
+        }
+
+        function getNewLoginForm() {
+            document.getElementById('LoginForm').innerHTML = "Login v2";
+        }
+
+        // banner
+        console.log('Unlaunch JavaScript library demo. This demo will call a feature flag that returns either "on" or "off" variation. Depending on the variation returned, it will show Login form version 1 or version 2');
+        console.log('This example uses attributes to determine which variation gets assigned. See https://docs.unlaunch.io/docs/managingflags/attributes')
+
+        console.log('For more information, see: https://docs.unlaunch.io/docs/sdks/javascript-library')
+    </script>
+</head>
+
+<body>
+    <h1>Initech</h1>
+    <script>
+        ulclient.on('ready', function () {
+
+            let variation = ulclient.variation(flag);
+            console.log(`[UL] Variation is ${variation}`)
+
+            const details = ulclient.variationDetail(flag);
+            console.log(`[UL] Evaluation reason is ${details.reason}`)
+
+
+            if (variation === 'on') {
+                getNewLoginForm();
+            } else {
+                getOldLoginForm();
+            }
+
+            let config = ulclient.variationConfiguration(flag)
+            console.log(config)
+        });
+    </script>
+
+    <h3>[open Console to see messages]</h3>
+    <style>
+        body {
+            text-align: center
+        }
+    </style>
+
+    <form class="box" action="First.html" method="post">
+        <h1 id="LoginForm">Login</h1>
+        <input type="text" name="" placeholder="Username">
+        <input type="password" name="" placeholder="Password">
+        <input type="submit" name="" value="Login">
+    </form>
+</body>
+</html>
