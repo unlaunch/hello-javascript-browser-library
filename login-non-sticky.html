@@ -12,10 +12,12 @@
     <script>
         const flag = 'new-login-form-flag'
         const apiKey = 'prod-public-c1967ee6-f9f3-43c5-ae40-7f8ab6d725cd'
-        const identity = 'anonymous-6' // Use special anonymous identity which generates a unique UUID
+        const identity = Math.floor(Math.random() * Math.floor(1000)) + '-random'; // Random user ID each time
 
+        // Here, we are not using localstorage so flag will be evaluated each time.
+        // This is only recommended for test environments. You should enable localstorage
+        // in production.
         const options = {
-            bootstrap: 'localstorage', // Use local storage
             evaluationReason: true,
         }
 
@@ -38,12 +40,13 @@
 
         // banner
         console.log('Unlaunch JavaScript library demo. This demo will call a feature flag that returns either "on" or "off" variation. Depending on the variation returned, it will show Login form version 1 or version 2');
+        console.log('This does NOT use Local Storage to store results or persist user id so flag is evaluated by calling backend each time the page is refreshed.')
         console.log('For more information, see: https://docs.unlaunch.io/docs/sdks/javascript-library')
     </script>
 </head>
 
-<body>
-    <h1>Initech</h1>
+<body text="#192a56">
+    <h1>Initech Non-Sticky Login</h1>
     <script>
         ulclient.on('ready', function () {
 
